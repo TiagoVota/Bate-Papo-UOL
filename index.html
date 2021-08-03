@@ -13,10 +13,38 @@
     <link rel="icon" href="https://www.google.com/s2/u/0/favicons?domain=uol.com.br" type="image/x-icon">
 
     <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
-    
+    <!-- Menu Superior -->
+    <header>
+        <img src="./assets/logo-bate-papo-uol.svg" alt="Logo Bate-Papo UOL">
+        <ion-icon name="people"></ion-icon>
+    </header>
+
+    <!-- Campo de Mensagens -->
+    <main>
+        <div class="message">hello world!</div>
+    </main>
+
+    <!-- Área para digitação -->
+    <footer>
+        <!-- Espaço para digitar mensagem -->
+        <div>
+            <input type="text" value="Escreva aqui..." />
+        </div>
+        <!-- Botão para envio da mensagem -->
+        <button>
+            <ion-icon name="paper-plane-outline"></ion-icon>
+        </button>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 </html>
