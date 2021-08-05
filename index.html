@@ -22,7 +22,7 @@
 <body>
     <!-- Menu Superior -->
     <header>
-        <img src="./assets/logo-bate-papo-uol.svg" alt="Logo Bate-Papo UOL">
+        <img src="./assets/logo-bate-papo-uol.svg" alt="Logo Bate-Papo UOL" />
         <ion-icon name="people"></ion-icon>
     </header>
 
@@ -67,7 +67,52 @@
         </button>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Menu Lateral -->
+    <div class="lateral-menu-screen hidden">
+        <!-- Área sombreada -->
+        <div class="shadow-area"></div>
+
+        <!-- Seção lateral -->
+        <div class="lateral-menu">
+            <div class="contacts">
+                <!-- Área com contatos -->
+                <div class="contacts-header">
+                    <p>
+                        Escolha um contato para enviar mensagem:
+                    </p>
+                </div>
+                <div class="contact">
+                    <ion-icon name="people"></ion-icon>
+                    <p>Todos</p>
+                </div>
+                <div class="contact">
+                    <ion-icon name="person-circle"></ion-icon>
+                    <p>João</p>
+                </div>
+                <div class="contact">
+                    <ion-icon name="person-circle"></ion-icon>
+                    <p>Maria</p>
+                </div>
+            </div>
+            <!-- Relação de visibilidade da mensagem -->
+            <div class="visibility-option">
+                <div class="visibility-header">
+                    <p>
+                        Escolha a visibilidade:
+                    </p>
+                </div>
+                <div class="public">
+                    <ion-icon name="lock-open"></ion-icon>
+                    <p>Público</p>
+                </div>
+                <div class="private">
+                    <ion-icon name="lock-closed"></ion-icon>
+                    <p>Reservado</p>
+                </div>
+            </div>
+                    
+            
+            <!-- Scripts -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="./js/script.js"></script>
 </body>

@@ -1,3 +1,8 @@
+/*
+    Camadas de profundidade (z-index):
+    3: página de login  -->  2: menu lateral  -->  1: header/footer
+*/
+
 :root {
     --header-footer-height: min(80px, 13vh);
     --default-bg-color: #FFFFFF;
@@ -6,8 +11,11 @@
     --msg-private-bg-color: #FFDEDE;
 }
 
-body {
+*{
     box-sizing: border-box;
+}
+
+body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--default-bg-color);
 }
@@ -27,13 +35,13 @@ header {
 }
 
 header ion-icon {
-    height: 45px;
     width: 45px;
+    height: 45px;
 }
 
 main {
-    height: calc(100vh - 2 * var(--header-footer-height) - 24px);  /* ISSO AQUI NÃO É GAMBIARRA?!?! */
     width: 100vw;
+    height: calc(100vh - 2 * var(--header-footer-height));  /* ISSO AQUI NÃO É GAMBIARRA?!?! */
     margin: var(--header-footer-height) 0;
     padding-top: 24px;
     font-size: 14px;
@@ -69,8 +77,8 @@ footer {
 }
 
 footer input {
+    width: calc(100vw - 26px - 2 * 18px);
     height: var(--header-footer-height);
-    width: calc(100vw - 26px - 3 * 18px);
     border-width: 0px;
     padding: 0 0 0 18px;
     font-family: 'Roboto', sans-serif;
@@ -86,6 +94,62 @@ footer button {
 }
 
 footer ion-icon {
-    height: 26px;
     width: 26px;
+    height: 26px;
+}
+
+.lateral-menu-screen {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+}
+
+.shadow-area {
+    width: 30%;
+    background-color:rgba(0, 0, 0, 0.6);
+}
+
+.lateral-menu {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    background-color: var(--default-bg-color);
+}
+
+.contacts-header, .visibility-header {
+    height: var(--header-footer-height);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.contacts ion-icon {
+    width: 25px;
+    height: 25px;
+    margin-left: 17px;
+    margin-right: 7px;
+}
+
+.contact, .public, .private {
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.visibility-option ion-icon {
+    width: 22px;
+    height: 22px;
+    margin-left: 20px;
+    margin-right: 7px;
+}
+
+.hidden {
+    display: none;
 }
