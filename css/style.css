@@ -1,15 +1,15 @@
 :root {
     --header-footer-height: min(80px, 13vh);
-    --default-background-color: #FFFFFF;
-    --main-background-color: #E5E5E5;
-    --connection-background-color: #DCDCDC;
-    --private-message-background-color: #FFDEDE;
+    --default-bg-color: #FFFFFF;
+    --main-bg-color: #f3f3f3;
+    --msg-connection-bg-color: #DCDCDC;
+    --msg-private-bg-color: #FFDEDE;
 }
 
 body {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    background-color: var(--default-background-color);
+    background-color: var(--default-bg-color);
 }
 
 header {
@@ -32,11 +32,27 @@ header ion-icon {
 }
 
 main {
-    height: calc(100vh - 2 * var(--header-footer-height));
+    height: calc(100vh - 2 * var(--header-footer-height) - 24px);  /* ISSO AQUI NÃO É GAMBIARRA?!?! */
     width: 100vw;
     margin: var(--header-footer-height) 0;
+    padding-top: 24px;
     font-size: 14px;
-    background-color: var(--main-background-color);
+    background-color: var(--main-bg-color);
+}
+
+.msg {
+    padding: 14px 7px 14px 9px;
+    margin: 4px 0;
+    font-size: 14px;
+    background-color: var(--default-bg-color);
+}
+
+.msg.msg-connection {
+    background-color: var(--msg-connection-bg-color)
+}
+
+.msg.msg-private {
+    background-color: var(--msg-private-bg-color)
 }
 
 footer {
@@ -66,7 +82,7 @@ footer button {
     height: 100%;
     padding: 0 18px;
     border-width: 0px;
-    background-color: var(--default-background-color);
+    background-color: var(--default-bg-color);
 }
 
 footer ion-icon {
