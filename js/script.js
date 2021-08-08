@@ -1,43 +1,64 @@
 const URL_MESSAGES = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages'
 
 
-function loadMessages() {
-    const mainElement = document.querySelector('main')
-    const oldMessageElement = mainElement.lastElementChild
+function startRender(renderTime=3000) {
+    renderMessages()
 
+    setInterval(renderMessages, renderTime)
+}
+
+
+function renderMessages() {
+    
+    // Promise para carregar mensagens
     axios.get(URL_MESSAGES)
     .then((messages) => {
-        clearMain(mainElement)
 
-        for (const message of messages.data) {
-            
-            const messageElement = makeMessageElement(message)
-            addMessage(messageElement, mainElement)
-        }
-
-        const newMessageElement = mainElement.lastElementChild
-        if (haveNewMessage(oldMessageElement, newMessageElement)) {
-            // ESSA FUNÇÃO TEM QUE VIR PRIMEIRO, ESTOU RENDERIZANDO O DOM INTEIRO A TOA
-            scrollToLastMessage(mainElement)
-        }
-
+        const mainElement = document.querySelector('main')
+    
+        if (haveNewMessage(mainElement, messages)) {
+    
+            loadMessages(mainElement, messages)
+        }    
     })
+}
+
+
+function loadMessages(mainElement, messages) {
+    clearMain(mainElement)
+
+    for (const message of messages.data) {
+        
+        const messageElement = makeMessageElement(message)
+
+        if (canRenderizeThisMessage(message, 'clientName')) {
+
+            addMessage(messageElement, mainElement)
+        } else {
+            // TIRAR ESSE ELSE, VER SE ELE ESTÁ FUNCIONADO CORRETAMENTE ANTES
+            console.log(`não pode!, mensagem:`, message)
+        }
+    }
+
+    const newMessageElement = mainElement.lastElementChild
+    
+    scrollToLastMessage(newMessageElement)
 }
 
 
 function makeMessageElement({ from, to, text, type, time }) {
     const messageElement = `<div class="msg-${ type }">
         <p>
-            <span>(${ time })</span> &ensp;<strong>${ from }</strong> para <strong>${ to }</strong>: ${ text }
+            <span class="time">(${ time })</span> &ensp;<strong>${ from }</strong> para <strong>${ to }</strong>: ${ text }
         </p>
-    </div>
-    `
+    </div>`
+    
     return messageElement
 }
 
 
-function scrollToLastMessage(mainElement) {
-    mainElement.lastElementChild.scrollIntoView({ behavior: 'smooth' })
+function scrollToLastMessage(newMessageElement) {
+    newMessageElement.scrollIntoView({ behavior: 'smooth' })
 }
 
 
@@ -51,14 +72,38 @@ function clearMain(mainElement) {
 }
 
 
-function haveNewMessage(oldMessageElement, newMessageElement) {
+function haveNewMessage(mainElement, messages) {
+    const oldMessageElement = mainElement.lastElementChild
     if (oldMessageElement === null) return true  // Caso primeira vez carregado
 
-    const oldTime = oldMessageElement.querySelector('span').innerText
-    const newTime = newMessageElement.querySelector('span').innerText
+    // Pegando o tempo da última mensagem enviada ao servidor
+    const lastTimeServer = [...messages.data].pop().time
 
-    if (oldTime !== newTime) return true
+
+    let lastTimeClient = oldMessageElement.querySelector('.time')
+    lastTimeClient = ['(', lastTimeClient, ')'].join('')
+
+    if (lastTimeServer !== lastTimeClient) return true
     return false
 }
 
-setInterval(loadMessages, 3000)
+
+/**
+ * Função para verificando se o usuário pode ver a mensagem (se não é privada ou se é privada e é para ele)
+ * @param {object} message Uma das mensagens de dentro do servidor
+ * @param {string} userName Nome do usuário
+ * @returns Booleano com a verificação
+ */
+function canRenderizeThisMessage(message, userName) {
+    const {to, type} = message
+
+    if (type === 'private_message') {
+
+        if (to === userName) return true
+        return false
+    }
+    return true
+}
+
+
+startRender()
