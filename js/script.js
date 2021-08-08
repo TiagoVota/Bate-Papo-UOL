@@ -1,19 +1,36 @@
-const URL_MESSAGES = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages'
+const URL_API = Object.freeze({
+    URL_MESSAGES: 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages',
+    URL_JOIN_ROOM: 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants'
+})
 
 
-function startRender(renderTime=3000) {
+function startRender(renderMessageTime=3000) {
+    askUserName()
+
     renderMessages()
+    setInterval(renderMessages, renderMessageTime)
+}
 
-    setInterval(renderMessages, renderTime)
+
+function askUserName() {
+    const userName = prompt('Qual o seu lindo nome?')
+    // userName = '100H'
+
+    // Promise para verificar usabilidade da mensagem
+    axios.post(URL_API.URL_JOIN_ROOM, { name: userName })
+    .then(() => {
+        return true
+    })
+    .catch(() => {
+        return askUserName()
+    })
 }
 
 
 function renderMessages() {
-    
     // Promise para carregar mensagens
-    axios.get(URL_MESSAGES)
+    axios.get(URL_API.URL_MESSAGES)
     .then((messages) => {
-
         const mainElement = document.querySelector('main')
     
         if (haveNewMessage(mainElement, messages)) {
@@ -31,12 +48,13 @@ function loadMessages(mainElement, messages) {
         
         const messageElement = makeMessageElement(message)
 
-        if (canRenderizeThisMessage(message, 'clientName')) {
+        if (canRenderizeThisMessage(message, '100H')) {
 
             addMessage(messageElement, mainElement)
         } else {
+            // console.log(message)
             // TIRAR ESSE ELSE, VER SE ELE ESTÁ FUNCIONADO CORRETAMENTE ANTES
-            console.log(`não pode!, mensagem:`, message)
+            // console.log(`não pode!, mensagem:`, message)
         }
     }
 
@@ -106,4 +124,4 @@ function canRenderizeThisMessage(message, userName) {
 }
 
 
-startRender()
+window.onload = startRender()
