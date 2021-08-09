@@ -1,6 +1,7 @@
 /*
     Camadas de profundidade (z-index):
     3: página de login  -->  2: menu lateral  -->  1: header/footer
+    ps.: (página de login) não implementada ainda
 */
 
 :root {
@@ -43,7 +44,7 @@ header ion-icon {
 
 main {
     width: 100vw;
-    height: calc(100vh - 2 * var(--header-footer-height));  /* ISSO AQUI NÃO É GAMBIARRA?!?! */
+    height: calc(100vh - 2 * var(--header-footer-height));
     overflow-y: auto;
     margin: var(--header-footer-height) 0;
     padding-top: 24px;
