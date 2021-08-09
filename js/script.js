@@ -1,33 +1,47 @@
 const URL_API = Object.freeze({
     URL_MESSAGES: 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages',
-    URL_JOIN_ROOM: 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants'
+    URL_JOIN_ROOM: 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants',
+    URL_LOGGED_IN: 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status'
 })
 
 
-function startRender(renderMessageTime=3000) {
-    askUserName()
+function startRender(timeRenderMessage=3000, timeStayLoggedIn=5000) {
+    const userName = askUserName()  // Tentei não usar uma variável global,
+    // isso acarretou em um encadeamento dessa variável por 3 funções,
+    // há algum jeito melhor?
 
-    renderMessages()
-    setInterval(renderMessages, renderMessageTime)
+    renderMessages(userName)
+    setInterval(renderMessages, timeRenderMessage, userName)
+
+    setInterval(stayLoggedIn, timeStayLoggedIn, userName)
+}
+
+
+function stayLoggedIn(userName) {
+    // Promise para atualizar o status de conectividade do usuário
+    axios.post(URL_API.URL_LOGGED_IN, { name: userName })
+    .catch(() => {
+        alert(`${ userName }, você desconectado(a)!\nPor favor, recarregue a página :)`)
+        // console.log(error.response)
+    })
 }
 
 
 function askUserName() {
-    const userName = prompt('Qual o seu lindo nome?')
-    // userName = '100H'
+    let userName = prompt('Qual o seu lindo nome?')
+    // const userName = '100H'
 
     // Promise para verificar usabilidade da mensagem
     axios.post(URL_API.URL_JOIN_ROOM, { name: userName })
-    .then(() => {
-        return true
-    })
     .catch(() => {
-        return askUserName()
+        userName = askUserName()
     })
+    return userName
 }
 
 
-function renderMessages() {
+function renderMessages(userName) {
+    // console.log('render message:', userName)
     // Promise para carregar mensagens
     axios.get(URL_API.URL_MESSAGES)
     .then((messages) => {
@@ -35,20 +49,20 @@ function renderMessages() {
     
         if (haveNewMessage(mainElement, messages)) {
     
-            loadMessages(mainElement, messages)
+            loadMessages(mainElement, messages, userName)
         }    
     })
 }
 
 
-function loadMessages(mainElement, messages) {
+function loadMessages(mainElement, messages, userName) {
     clearMain(mainElement)
 
     for (const message of messages.data) {
         
         const messageElement = makeMessageElement(message)
 
-        if (canRenderizeThisMessage(message, '100H')) {
+        if (canRenderizeThisMessage(message, userName)) {
 
             addMessage(messageElement, mainElement)
         } else {
@@ -95,11 +109,11 @@ function haveNewMessage(mainElement, messages) {
     if (oldMessageElement === null) return true  // Caso primeira vez carregado
 
     // Pegando o tempo da última mensagem enviada ao servidor
-    const lastTimeServer = [...messages.data].pop().time
+    let lastTimeServer = [...messages.data].pop().time
 
 
-    let lastTimeClient = oldMessageElement.querySelector('.time')
-    lastTimeClient = ['(', lastTimeClient, ')'].join('')
+    let lastTimeClient = oldMessageElement.querySelector('.time').innerText
+    lastTimeServer = ['(', lastTimeServer, ')'].join('')
 
     if (lastTimeServer !== lastTimeClient) return true
     return false
