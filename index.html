@@ -27,42 +27,16 @@
     </header>
 
     <!-- Campo de Mensagens -->
-    <main>
-        <!-- <div class="msg-status">
-            <p>
-                (09:21:45)  João  entra na sala...
-            </p>
-        </div>
-        <div class="msg-message">
-            <p>
-                (09:22:28)  João para Todos:  Bom dia
-            </p>
-        </div>
-        <div class="msg-message">
-            <p>
-                (09:22:38)  Maria para João:  Oi João :)
-            </p>
-        </div>
-        <div class="msg-private_message">
-            <p>
-                (09:22:48)  João reservadamente para Maria:  Oi gatinha quer tc?
-            </p>
-        </div>
-        <div class="msg-status">
-            <p>
-                (09:22:58)  Maria  sai da sala...
-            </p>
-        </div> -->
-    </main>
+    <main></main>
 
     <!-- Área para digitação -->
     <footer>
         <!-- Espaço para digitar mensagem -->
         <div>
-            <input type="text" value="Escreva aqui..." />
+            <input type="text" placeholder="Escreva aqui..." onkeyup="sendWithEnter(event)" />
         </div>
         <!-- Botão para envio da mensagem -->
-        <button>
+        <button onclick="sendMessageClick()">
             <ion-icon name="paper-plane-outline"></ion-icon>
         </button>
     </footer>
